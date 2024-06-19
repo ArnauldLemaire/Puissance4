@@ -1,6 +1,10 @@
 import numpy as np
 import random as rd
 
+ROUGE = "\033[0;31m"
+BLEU =  "\033[0;34m"
+RAZCOULEUR = "\033[0m"
+
 # On creer une grille de dimension 6 x 7 remplie de 0
 def grilleVide() :
     return np.zeros((6,7))
@@ -17,9 +21,9 @@ def afficheGrille(grille) :
             if t == 0 :
                 s += "."
             elif t == 1 :
-                s += "X"
-            else : 
-                s += "O"
+                s += ROUGE + "X" + RAZCOULEUR
+            else :
+                s += BLEU + "O" + RAZCOULEUR
             s += "|"
         print(s)
 
@@ -34,9 +38,9 @@ def coupPossible(grille, colonne) :
         return not test
     else :
         return False
-    
-# On joue dans la grille        
-def jouer(grille, joueur, colonne) : 
+
+# On joue dans la grille
+def jouer(grille, joueur, colonne) :
     i = 5
     t = grille[i,colonne]
     while ((t != 0) & (i>0)) :
@@ -44,7 +48,7 @@ def jouer(grille, joueur, colonne) :
         t = grille[i,colonne]
     grille[i,colonne] = joueur
     return grille
- 
+
 # On test les combinaisons gagnantes
 def ligneVersDroite(grille, joueur, ligne, colonne) :
     t = grille[ligne,colonne]
@@ -57,7 +61,7 @@ def ligneVersDroite(grille, joueur, ligne, colonne) :
         return (compteur == 4)
     else :
         return False
-    
+
 def ligneVersBas(grille, joueur, ligne, colonne) :
     t = grille[ligne,colonne]
     if t == joueur :
@@ -95,7 +99,7 @@ def ligneDiagonaleGauche(grille, joueur, ligne, colonne):
     else :
         return False
 
-# On test si un joueur a gagne la partie       
+# On test si un joueur a gagne la partie
 def gagne(grille, joueur) :
     test = False
     i = 0
@@ -120,9 +124,13 @@ def partieFinie(grille):
         i += 1
     return test | gagne(grille,1) | gagne(grille,2)
 
+# vide la ligne de la gille
+def videLigne(ligne):
+    for i in range(6):
+        grille[ligne,i]=0
 
 # Jouons une partie
-# Initialisation de la partie 
+# Initialisation de la partie
 grille = grilleVide()
 
 # On tire au sort le joueur qui commence
